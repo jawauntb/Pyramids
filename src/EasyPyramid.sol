@@ -7,10 +7,11 @@ contract Contract {
     uint256 public numInvestors = 0;
     uint256 public depth = 0;
     address[] public investors;
+    uint256 investors_length = 0;
     mapping(address => uint256) public balances;
     constructor () payable {
         require(msg.value >= MINIMUM_INVESTMENT);
-        investors.length = 3;
+        investors_length = 3;
         investors[0] = msg.sender;
         numInvestors = 1;
         depth = 1;
@@ -23,7 +24,7 @@ contract Contract {
         numInvestors +=1;
         investors[numInvestors-1] = msg.sender;
 
-        if(numInvestors == investors.length){
+        if(numInvestors == investors_length){
             //payout higher tiers
             uint256 endIndex = numInvestors - 2**(depth);
             uint256 startIndex = endIndex - 2**(depth-1);
@@ -41,7 +42,7 @@ contract Contract {
             //st8 update
             balances[address(this)] = 0;
             depth += 1;
-            investors.length += 2**depth;
+            investors_length += 2**depth;
         }
     }
 
