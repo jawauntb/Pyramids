@@ -20,10 +20,12 @@ contract Contract {
 
     receive () payable external {
         require(msg.value >= MINIMUM_INVESTMENT);
+        //always take $ if over min
         balances[address(this)] += msg.value;
         numInvestors +=1;
         investors[numInvestors-1] = msg.sender;
-
+        
+        // once a tier has been filled, start a payout
         if(numInvestors == investors_length){
             //payout higher tiers
             uint256 endIndex = numInvestors - 2**(depth);
